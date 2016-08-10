@@ -1,0 +1,19 @@
+<resources>
+    <!--
+    TODO: Before you run your application, you need a Google Maps API key.
+
+    To get one, follow this link, follow the directions and press "Create" at the end:
+
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=55:5B:E7:DC:4F:02:7D:87:7F:EE:15:BB:D0:4E:60:A0:15:B5:6E:D0%3Bcom.arsy.googlemapsrippleeffect
+
+    You can also add your credentials to an existing key, using this line:
+    55:5B:E7:DC:4F:02:7D:87:7F:EE:15:BB:D0:4E:60:A0:15:B5:6E:D0;com.arsy.googlemapsrippleeffect
+
+    Alternatively, follow the directions here:
+    https://developers.google.com/maps/documentation/android/start#get-key
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyAwQDEG7dteFWzj1XpdOU1s9-AMNvWQjrM</string>
+</resources>
