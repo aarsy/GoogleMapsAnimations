@@ -101,7 +101,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             try {
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new
                         LatLng(location.getLatitude(),
-                        location.getLongitude()), 15));
+                        location.getLongitude()), 12));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -113,6 +113,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mapRipple = new MapRipple(mMap, latLng, context);
 //            mapRipple.withNumberOfRipples(3);
 //            mapRipple.withFillColor(Color.BLUE);
+//            mapRipple.withStrokeColor(Color.BLACK);
+//            mapRipple.withStrokewidth(10);      // 10dp
+//            mapRipple.withDistance(2000);      // 2000 metres radius
+//            mapRipple.withRippleDuration(12000);    //12000ms
+//            mapRipple.withTransparency(0.5f);
             mapRipple.startRippleMapAnimation();
         }
     }
@@ -156,6 +161,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         } else {
             mapRipple.startRippleMapAnimation();
             ((Button) view).setText("Stop Animation");
+        }
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        try {
+            if (mapRipple.isAnimationRunning()) {
+                mapRipple.stopRippleMapAnimation();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -306,7 +324,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             alertDialog.setTitle("GPS Settings");
 
             // Setting Dialog Message
-            alertDialog.setMessage("GPS is not enabled. Click on setting to enable and get location");
+            alertDialog.setMessage("GPS is not enabled. Click on setting to enable and get location, please start app again after turning on GPS.");
             alertDialog.setCancelable(false);
 
             // On pressing Settings button
@@ -327,23 +345,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         @Override
         public void onLocationChanged(Location location) {
             this.location = location;
-            try {
-//                Toast.makeText(context, "Location:\n"+ location.getLatitude()+":"+location.getLongitude(), Toast.LENGTH_SHORT).show();
-//
-//                int r = rand.nextInt(255);
-//                int g = rand.nextInt(255);
-//                int b = rand.nextInt(255);
-//                int randomColor=Color.rgb(r, g, b);
-//                mapRipple.withStrokeColor(randomColor);
-////                mapRipple.withNumberOfRipples(2);
-//                mapRipple.withFillColor(randomColor);
-
-//                mapRipple.withLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
-//                mapRipple.startRippleMapAnimation();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
         }
 
         @Override

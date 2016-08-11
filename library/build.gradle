@@ -1,5 +1,29 @@
 apply plugin: 'com.android.library'
 
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'maps-rippleEffect'
+
+    publishedGroupId = 'com.github.aarsy.googlemapsrippleeffect'
+    libraryName = 'googlemapsrippleeffect'
+    artifact = 'googlemapsrippleeffect'
+
+    libraryDescription = '"GoogleMapsRippleEffect" is an awesome android library for developers who need to show multiple types of circular ripple effects on google map'
+
+    siteUrl = 'https://github.com/aarsy/GoogleMapsRippleEffect'
+    gitUrl = 'https://github.com/aarsy/GoogleMapsRippleEffect.git'
+
+    libraryVersion = '1.0.0'
+
+    developerId = 'aarsy'
+    developerName = 'Abhay Raj Singh Yadav'
+    developerEmail = 'abhayyadavleo@gmail.com   '
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
 android {
     compileSdkVersion 24
     buildToolsVersion "23.0.3"
@@ -8,7 +32,7 @@ android {
         minSdkVersion 11
         targetSdkVersion 24
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
     }
     buildTypes {
         release {
@@ -24,3 +48,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'com.google.android.gms:play-services-maps:9.4.0'
 }
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'

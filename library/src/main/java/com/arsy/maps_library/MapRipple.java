@@ -55,7 +55,7 @@ public class MapRipple {
         gOverlays = new GroundOverlay[4];
     }
 
-    public void OverLay(final GroundOverlay groundOverlay, int i) {
+    private void OverLay(final GroundOverlay groundOverlay, int i) {
         vAnimators[i] = ValueAnimator.ofInt(0, (int) distance);
         vAnimators[i].setRepeatCount(ValueAnimator.INFINITE);
         vAnimators[i].setRepeatMode(ValueAnimator.RESTART);
