@@ -15,22 +15,22 @@
     mavenCentral() // jcenter() works as well because it pulls from Maven Central
     }
     dependencies {
-    	compile 'com.github.aarsy.googlemapsrippleeffect:googlemapsrippleeffect:1.0.0'    
+    	compile 'com.github.aarsy.googlemapsrippleeffect:googlemapsrippleeffect:1.0.1'    
     }
  **or** simply under dependencies section:   
   
-    compile 'com.github.aarsy.googlemapsrippleeffect:googlemapsrippleeffect:1.0.0'
+    compile 'com.github.aarsy.googlemapsrippleeffect:googlemapsrippleeffect:1.0.1'
 
 ### or Using Maven:
     <dependency>
         <groupId>com.github.aarsy.googlemapsrippleeffect</groupId>
         <artifactId>googlemapsrippleeffect</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
         <type>pom</type>
     </dependency>
 
 ### or Using Ivy:         
-    <dependency org='com.github.aarsy.googlemapsrippleeffect' name='googlemapsrippleeffect' rev='1.0.0'>
+    <dependency org='com.github.aarsy.googlemapsrippleeffect' name='googlemapsrippleeffect' rev='1.0.1'>
       	<artifact name='$AID' ext='pom'></artifact>
     </dependency>
 
