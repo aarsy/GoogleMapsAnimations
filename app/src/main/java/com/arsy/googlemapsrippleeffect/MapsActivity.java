@@ -101,7 +101,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             try {
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new
                         LatLng(location.getLatitude(),
-                        location.getLongitude()), 12));
+                        location.getLongitude()), 14));
             } catch (Exception e) {
                 e.printStackTrace();
             }
