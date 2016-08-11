@@ -13,7 +13,7 @@ ext {
     siteUrl = 'https://github.com/aarsy/GoogleMapsRippleEffect'
     gitUrl = 'https://github.com/aarsy/GoogleMapsRippleEffect.git'
 
-    libraryVersion = '1.0.0'
+    libraryVersion = '1.0.1'
 
     developerId = 'aarsy'
     developerName = 'Abhay Raj Singh Yadav'
@@ -32,7 +32,7 @@ android {
         minSdkVersion 11
         targetSdkVersion 24
         versionCode 1
-        versionName "1.0.0"
+        versionName "1.0.1"
     }
     buildTypes {
         release {
