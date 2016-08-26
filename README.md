@@ -1,7 +1,10 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-GoogleMapsRippleEffect-green.svg?style=true)](https://android-arsenal.com/details/1/4126)
 
-# GoogleMapsRippleEffect
-"GoogleMapsRippleEffect" is an awesome android library for developers who need to show multiple types of circular ripple effects on google map, e.g show search area to your clients and users if you are finding matches for their needs. This is the one and only ripple effect android library for google maps on github and anywhere as per google's search. Developers can also use #PokemonGo type ripple effect which will be uploaded soon. See the samples below:
+# GoogleMapsRippleEffect        
+
+"GoogleMapsRippleEffect" is an awesome first of its type android library for showing a ripple on a google map, e.g show catchment area of an earthquake where ripples have been felt, give prominence to certain markers which need to be highlighted. Also add a ripple when your user is moving on the map and give a #PokemonGo type ripple effect. The example details of the same will be added soon. 
+
+Below samples show the ripple effect in action:
 
 
 ![](https://github.com/arsy1995/GoogleMapsRippleEffect/blob/master/gifs/Sample2.gif)                ![](https://github.com/arsy1995/GoogleMapsRippleEffect/blob/master/gifs/Sample1.gif)
@@ -10,27 +13,20 @@
 ------    
 
 #Download    
-###Using Gradle:
-    repositories {
-    mavenCentral() // jcenter() works as well because it pulls from Maven Central
-    }
-    dependencies {
-    	compile 'com.github.aarsy.googlemapsrippleeffect:googlemapsrippleeffect:1.0.0'    
-    }
- **or** simply under dependencies section:   
+###Using Gradle: under dependencies section:   
   
-    compile 'com.github.aarsy.googlemapsrippleeffect:googlemapsrippleeffect:1.0.0'
+    compile 'com.github.aarsy.googlemapsrippleeffect:googlemapsrippleeffect:1.0.1'
 
 ### or Using Maven:
     <dependency>
         <groupId>com.github.aarsy.googlemapsrippleeffect</groupId>
         <artifactId>googlemapsrippleeffect</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
         <type>pom</type>
     </dependency>
 
 ### or Using Ivy:         
-    <dependency org='com.github.aarsy.googlemapsrippleeffect' name='googlemapsrippleeffect' rev='1.0.0'>
+    <dependency org='com.github.aarsy.googlemapsrippleeffect' name='googlemapsrippleeffect' rev='1.0.1'>
       	<artifact name='$AID' ext='pom'></artifact>
     </dependency>
 
