@@ -166,8 +166,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
         try {
             if (mapRipple.isAnimationRunning()) {
                 mapRipple.stopRippleMapAnimation();
@@ -176,6 +176,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             e.printStackTrace();
         }
     }
+
 
     private class LocationTracker implements LocationListener {
 
@@ -344,7 +345,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         @Override
         public void onLocationChanged(Location location) {
+            //            mapRipple.withNumberOfRipples(3);
             this.location = location;
+//            Toast.makeText(context, "  " + location.getLatitude() + ",  " + location.getLongitude(), Toast.LENGTH_SHORT).show();
+            mapRipple.withLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
         }
 
         @Override
