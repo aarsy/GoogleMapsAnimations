@@ -10,6 +10,7 @@ android {
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -26,4 +27,5 @@ dependencies {
     compile 'com.google.android.gms:play-services:9.4.0'
     compile project(':googlemapsrippleeffect')
     compile 'com.android.support:support-v4:24.0.0'
+    compile 'com.android.support:multidex:1.0.1'
 }

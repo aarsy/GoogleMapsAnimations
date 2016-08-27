@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -112,9 +113,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
             mapRipple = new MapRipple(mMap, latLng, context);
 //            mapRipple.withNumberOfRipples(3);
-//            mapRipple.withFillColor(Color.BLUE);
+//            mapRipple.withFillColor(Color.parseColor("#FFA3D2E4"));
 //            mapRipple.withStrokeColor(Color.BLACK);
-//            mapRipple.withStrokewidth(10);      // 10dp
+//            mapRipple.withStrokewidth(0);      // 10dp
 //            mapRipple.withDistance(2000);      // 2000 metres radius
 //            mapRipple.withRippleDuration(12000);    //12000ms
 //            mapRipple.withTransparency(0.5f);
@@ -162,6 +163,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mapRipple.startRippleMapAnimation();
             ((Button) view).setText("Stop Animation");
         }
+    }
+
+    public void advancedRipple(View view) {
+        mapRipple.stopRippleMapAnimation();
+        mapRipple.withNumberOfRipples(3);
+        mapRipple.withFillColor(Color.parseColor("#FFA3D2E4"));
+        mapRipple.withStrokewidth(0);      //0dp
+        mapRipple.startRippleMapAnimation();
+    }
+
+    public void simpleRipple(View view) {
+        mapRipple.stopRippleMapAnimation();
+        mapRipple.withNumberOfRipples(1);
+        mapRipple.withFillColor(Color.parseColor("#00000000"));
+        mapRipple.withStrokeColor(Color.BLACK);
+        mapRipple.withStrokewidth(10);      // 10dp
+        mapRipple.startRippleMapAnimation();
     }
 
 
