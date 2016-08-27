@@ -15,18 +15,18 @@ Below samples show the ripple effect in action:
 #Download    
 ###Using Gradle: under dependencies section:   
   
-    compile 'com.github.aarsy.googlemapsrippleeffect:googlemapsrippleeffect:1.0.1'
+    compile 'com.github.aarsy.googlemapsrippleeffect:googlemapsrippleeffect:1.0.2'
 
 ### or Using Maven:
     <dependency>
         <groupId>com.github.aarsy.googlemapsrippleeffect</groupId>
         <artifactId>googlemapsrippleeffect</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
         <type>pom</type>
     </dependency>
 
 ### or Using Ivy:         
-    <dependency org='com.github.aarsy.googlemapsrippleeffect' name='googlemapsrippleeffect' rev='1.0.1'>
+    <dependency org='com.github.aarsy.googlemapsrippleeffect' name='googlemapsrippleeffect' rev='1.0.2'>
       	<artifact name='$AID' ext='pom'></artifact>
     </dependency>
 
