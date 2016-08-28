@@ -6,9 +6,7 @@
 
 Below samples show the ripple effect in action:
 
-
 ![](https://github.com/arsy1995/GoogleMapsRippleEffect/blob/master/gifs/Sample2.gif)                ![](https://github.com/arsy1995/GoogleMapsRippleEffect/blob/master/gifs/Sample1.gif)
-
 
 ------    
 
@@ -25,18 +23,13 @@ Below samples show the ripple effect in action:
         <type>pom</type>
     </dependency>
 
-### or Using Ivy:         
-    <dependency org='com.github.aarsy.googlemapsrippleeffect' name='googlemapsrippleeffect' rev='1.0.2'>
-      	<artifact name='$AID' ext='pom'></artifact>
-    </dependency>
-
 ------
 
 #Documentation
 
 ###Default Ripple animation
 Just two lines of code :  
-Use **.startRippleMapAnimation() and .stopRippleMapAnimation() methods to start and stop Animation.**     
+Use **.startRippleMapAnimation()** and **.stopRippleMapAnimation()** methods to start and stop Animation.     
 Example is given below (Preview shown above in first sample)
   
         // mMap is GoogleMap object, latLng is the location on map from which ripple should start
@@ -73,10 +66,34 @@ Example is given below (Preview shown above in second sample)
                 mapRipple.withTransparency(0.5f);
                 mapRipple.startRippleMapAnimation();
         // Use same procedure to stop Animation and start it again as mentioned anove in Default Ripple Animation Sample
-				
+
+###Update center of ripple as location changes(Needed when user moves)
+Just one line of code is needed:  
+Use **.mapRipple.withLatLng(LatLng changedLatlng)** method anytime in future to update center of ripple.     
+  
+  	// after implementing **LocationListener** interface to current class use:
+        	@Override
+        	public void onLocationChanged(Location location) {
+           		mapRipple.withLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
+        	}
+	//See the sample for more help.
+       
 ------
 
 ###Compatibility
 
 **Minimum Android SDK**: This library requires a minimum API level of **11**.    
+
+------
+
+###License
+Copyright 2016 Abhay Raj Singh Yadav(arsy).
+
+   Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions andlimitations under the License.
+
 
