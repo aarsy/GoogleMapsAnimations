@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/GoogleMapsRippleEffect.iml" filepath="$PROJECT_DIR$/GoogleMapsRippleEffect.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/googlemapsrippleeffect/googlemapsrippleeffect.iml" filepath="$PROJECT_DIR$/googlemapsrippleeffect/googlemapsrippleeffect.iml" />
-      <module fileurl="file://$PROJECT_DIR$/googlemapsrippleeffect/library.iml" filepath="$PROJECT_DIR$/googlemapsrippleeffect/library.iml" />
     </modules>
   </component>
 </project>
