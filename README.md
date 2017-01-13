@@ -10,7 +10,7 @@ Below samples show the ripple effect in action:
 
 ------    
 
-#Download    
+#Download (These are not working for now. Please download the package manually until this issue is resolved)
 ###Using Gradle: under dependencies section:   
   
     compile 'com.github.aarsy.googlemapsanimations:googlemapsanimations:1.0.3'
