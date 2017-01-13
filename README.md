@@ -1,31 +1,33 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-GoogleMapsRippleEffect-green.svg?style=true)](https://android-arsenal.com/details/1/4126)
 
-# GoogleMapsRippleEffect        
+# GoogleMapsAnimations        
 
-"GoogleMapsRippleEffect" is an awesome first of its type android library for showing a ripple on a google map, e.g show catchment area of an earthquake where ripples have been felt, give prominence to certain markers which need to be highlighted. Also add a ripple when your user is moving on the map and give a #PokemonGo type ripple effect. The example details of the same will be added soon. 
+"GoogleMapsAnimations" is an awesome first of its type android library for showing a ripple and radar animations on a google map, e.g show catchment area of an earthquake where ripples have been felt, give prominence to certain markers which need to be highlighted. Also add a ripple when your user is moving on the map and give a #PokemonGo type ripple effect and also add a radar type effect to show users that you are searching in certain area
 
 Below samples show the ripple effect in action:
 
-![](https://github.com/arsy1995/GoogleMapsRippleEffect/blob/master/gifs/Sample2.gif)                ![](https://github.com/arsy1995/GoogleMapsRippleEffect/blob/master/gifs/Sample1.gif)
+<img src="/gifs/Sample2.gif" > <img src="/gifs/Sample1.gif" > <img src="/gifs/Sample3.gif"> <img src="/gifs/Sample4.gif">
 
 ------    
 
 #Download    
 ###Using Gradle: under dependencies section:   
   
-    compile 'com.github.aarsy.googlemapsrippleeffect:googlemapsrippleeffect:1.0.2'
+    compile 'com.github.aarsy.googlemapsanimations:googlemapsanimations:1.0.3'
 
 ### or Using Maven:
     <dependency>
-        <groupId>com.github.aarsy.googlemapsrippleeffect</groupId>
-        <artifactId>googlemapsrippleeffect</artifactId>
-        <version>1.0.2</version>
+        <groupId>com.github.aarsy.googlemapsanimations</groupId>
+        <artifactId>googlemapsanimations</artifactId>
+        <version>1.0.3</version>
         <type>pom</type>
     </dependency>
 
 ------
 
 #Documentation
+
+##Ripple Animation
 
 ###Default Ripple animation
 Just two lines of code :  
@@ -69,7 +71,7 @@ Example is given below (Preview shown above in second sample)
 
 ###Update center of ripple as location changes(Needed when user moves)
 Just one line of code is needed:  
-Use **.mapRipple.withLatLng(LatLng changedLatlng)** method anytime in future to update center of ripple.     
+Use **.mapRipple.withLatLng(LatLng changedLatlng)** method anytime in future to update center of ripple.
   
   	// after implementing **LocationListener** interface to current class use:
         	@Override
@@ -77,16 +79,90 @@ Use **.mapRipple.withLatLng(LatLng changedLatlng)** method anytime in future to 
            		mapRipple.withLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
         	}
 	//See the sample for more help.
+	
+------
+	
+	
+##Radar Animation
+
+###Simple Clockwise Radar animation
+Just two lines of code :  
+Use **.startRadarAnimation()** and **.stopRadarAnimation()** methods to start and stop Animation.     
+Example is given below (Preview shown above in third sample)
+  
+        // mMap is GoogleMap object, latLng is the location on map from which ripple should start
+              
+                MapRadar mapRadar = new MapRadar(mMap, latLng, context);
+		mapRadar.withDistance(2000);
+		mapRadar.withOuterCircleStrokeColor(Color.parseColor("#fccd29"));
+		mapRadar.withRadarColors(Color.parseColor("#00fccd29"), Color.parseColor("#fffccd29"));
+			//withRadarColors() have two parameters, startColor and tailColor respectively
+			//startColor should start with transparency, here 00 in front of fccd29 indicates fully transparent
+			//tailColor should end with opaqueness, here f in front of fccd29 indicates fully opaque
+		mapRadar.startRadarAnimation();      //in onMapReadyCallBack
+        
+                @Override
+                protected void onStop() {
+                    super.onStop();
+                    if (mapRadar.isAnimationRunning()) {
+                        mapRadar.stopRadarAnimation();
+                    }
+                }
+
+
+
+###Advanced Clockwise and AntiClockwise Radar animation
+
+Example is given below (Preview shown above in fourth sample)
+  
+        // mMap is GoogleMap object, latLng is the location on map from which ripple should start
+              
+                MapRadar mapRadar = new MapRadar(mMap, latLng, context);
+		mapRadar.withDistance(2000);
+		mapRadar.withOuterCircleStrokeColor(Color.parseColor("#fccd29"));
+		mapRadar.withOuterCircleStrokewidth(7);
+		mapRadar.withOuterCircleTransparency(0.4f);
+		mapRadar.withClockWiseAnticlockwise(true);		//enable both side rotation
+		mapRadar.withClockwiseAnticlockwiseDuration(2);
+		//withClockwiseAnticlockwiseDuration(duration), here duration denotes how much cycles should animation makes in 
+		//one direction
+		mapRadar.withOuterCircleFillColor(Color.parseColor("#12000000"));            
+		mapRadar.withRadarColors(Color.parseColor("#00fccd29"), Color.parseColor("#fffccd29"));
+			//withRadarColors() have two parameters, startColor and tailColor respectively
+			//startColor should start with transparency, here 00 in front of fccd29 indicates fully transparent
+			//tailColor should end with opaqueness, here f in front of fccd29 indicates fully opaque
+		mapRadar.withRadarSpeed(5);	//controls radar speed
+		mapRadar.withRadarTransparency(0.4f);
+		mapRadar.startRadarAnimation();      //in onMapReadyCallBack
+		
+                @Override
+                protected void onStop() {
+                    super.onStop();
+                    if (mapRadar.isAnimationRunning()) {
+                        mapRadar.stopRadarAnimation();
+                    }
+                }
+
+###Update center of radar as location changes(Needed when user moves)
+Just one line of code is needed:  
+Use **.mapRadar.withLatLng(LatLng changedLatlng)** method anytime in future to update center of radar.    
+  
+  	// after implementing **LocationListener** interface to current class use:
+        	@Override
+        	public void onLocationChanged(Location location) {
+           		mapRadar.withLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
+        	}
+	//See the sample for more help.
        
 ------
 
-###Compatibility
+#Compatibility
 
 **Minimum Android SDK**: This library requires a minimum API level of **11**.    
 
 ------
 
-###License
+#License
 Copyright 2016 Abhay Raj Singh Yadav(arsy).
 
    Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
