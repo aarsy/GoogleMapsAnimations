@@ -6,16 +6,16 @@ ext {
     bintrayRepo = 'maven'
     bintrayName = 'maps-rippleEffect'
 
-    publishedGroupId = 'com.github.aarsy.googlemapsrippleeffect'
-    libraryName = 'googlemapsrippleeffect'
-    artifact = 'googlemapsrippleeffect'
+    publishedGroupId = 'com.github.aarsy.googlemapsanimations'
+    libraryName = 'googlemapsanimations'
+    artifact = 'googlemapsanimations'
 
-    libraryDescription = '"GoogleMapsRippleEffect" is an awesome android library for developers who need to show multiple types of circular ripple effects on google map'
+    libraryDescription = '"GoogleMapsRippleEffect" is an awesome android library for developers who need to show radar effect or multiple types of circular ripple effects on google map'
 
-    siteUrl = 'https://github.com/aarsy/GoogleMapsRippleEffect'
-    gitUrl = 'https://github.com/aarsy/GoogleMapsRippleEffect.git'
+    siteUrl = 'https://github.com/aarsy/GoogleMapsAnimations'
+    gitUrl = 'https://github.com/aarsy/GoogleMapsAnimations.git'
 
-    libraryVersion = '1.0.2'
+    libraryVersion = '1.0.3'
 
     developerId = 'aarsy'
     developerName = 'Abhay Raj Singh Yadav'
@@ -34,7 +34,7 @@ android {
         minSdkVersion 11
         targetSdkVersion 24
         versionCode 1
-        versionName "1.0.2"
+        versionName "1.0.3"
     }
     buildTypes {
         release {

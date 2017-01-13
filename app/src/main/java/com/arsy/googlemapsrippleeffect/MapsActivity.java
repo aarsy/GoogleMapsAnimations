@@ -19,7 +19,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.arsy.maps_library.MapAnimationType;
+import com.arsy.maps_library.MapRadar;
 import com.arsy.maps_library.MapRipple;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -36,7 +36,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Context context;
     private final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 100;
     private LocationTracker locationTrackObj;
-    private MapRipple mapAnimation;
+    private MapRipple mapRipple;
+    private MapRadar mapRadar;
+    private Button startstoprippleBtn;
+    private final int ANIMATION_TYPE_RIPPLE = 0;
+    private final int ANIMATION_TYPE_RADAR = 1;
+    private int whichAnimationWasRunning = ANIMATION_TYPE_RIPPLE;
 
 
     @Override
@@ -56,6 +61,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 checkLocationPermission();
             }
         }
+        startstoprippleBtn = (Button) findViewById(R.id.startstopripple);
 
     }
 
@@ -112,20 +118,30 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             else {
                 latLng = new LatLng(0.0, 0.0);
             }
-            mapAnimation = new MapRipple(mMap, latLng, context);
-//            mapAnimation.withNumberOfRipples(3);
-//            mapAnimation.withFillColor(Color.parseColor("#FFA3D2E4"));
-//            mapAnimation.withStrokeColor(Color.BLACK);
-//            mapAnimation.withStrokewidth(0);      // 10dp
-//            mapAnimation.withDistance(2000);      // 2000 metres radius
-//            mapAnimation.withRippleDuration(12000);    //12000ms
-//            mapAnimation.withTransparency(0.5f);
+            mapRipple = new MapRipple(mMap, latLng, context);
 
-            mapAnimation.withDistance(100000);
-            mapAnimation.withStrokewidth(4);
-            mapAnimation.withStrokeColor(Color.parseColor("#38728f"));
-            mapAnimation.setMapAnimationType(MapAnimationType.SWEEP);
-            mapAnimation.startMapAnimation();
+//            mapRipple.withNumberOfRipples(3);
+//            mapRipple.withFillColor(Color.parseColor("#FFA3D2E4"));
+//            mapRipple.withStrokeColor(Color.BLACK);
+//            mapRipple.withStrokewidth(0);      // 10dp
+//            mapRipple.withDistance(2000);      // 2000 metres radius
+//            mapRipple.withRippleDuration(12000);    //12000ms
+//            mapRipple.withTransparency(0.5f);
+            mapRipple.startRippleMapAnimation();
+
+
+            mapRadar = new MapRadar(mMap, latLng, context);
+            //mapRadar.withClockWiseAnticlockwise(true);
+            mapRadar.withDistance(2000);
+            mapRadar.withClockwiseAnticlockwiseDuration(2);
+            //mapRadar.withOuterCircleFillColor(Color.parseColor("#12000000"));
+            mapRadar.withOuterCircleStrokeColor(Color.parseColor("#fccd29"));
+            //mapRadar.withRadarColors(Color.parseColor("#00000000"), Color.parseColor("#ff000000"));  //starts from transparent to fuly black
+            mapRadar.withRadarColors(Color.parseColor("#00fccd29"), Color.parseColor("#fffccd29"));  //starts from transparent to fuly black
+            //mapRadar.withOuterCircleStrokewidth(7);
+            //mapRadar.withRadarSpeed(5);
+            mapRadar.withOuterCircleTransparency(0.5f);
+            mapRadar.withRadarTransparency(0.5f);
         }
     }
 
@@ -162,40 +178,58 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     public void startstopAnimation(View view) {
-        if (mapAnimation.isAnimationRunning()) {
-            mapAnimation.stopMapAnimation();
+        if (mapRadar.isAnimationRunning() || mapRipple.isAnimationRunning()) {
+            if (mapRadar.isAnimationRunning())
+                mapRadar.stopRadarAnimation();
+            if (mapRipple.isAnimationRunning())
+                mapRipple.stopRippleMapAnimation();
             ((Button) view).setText("Start Animation");
         } else {
-            mapAnimation.startMapAnimation();
-            ((Button) view).setText("Stop Animation");
+            if (whichAnimationWasRunning == ANIMATION_TYPE_RADAR)
+                mapRadar.startRadarAnimation();
+            else
+                mapRipple.startRippleMapAnimation();
+            startstoprippleBtn.setText("Stop Animation");
         }
     }
 
     public void advancedRipple(View view) {
-        mapAnimation.stopMapAnimation();
-        mapAnimation.setMapAnimationType(MapAnimationType.RIPPLE);
-        mapAnimation.withNumberOfRipples(3);
-        mapAnimation.withFillColor(Color.parseColor("#FFA3D2E4"));
-        mapAnimation.withStrokewidth(0);      //0dp
-        mapAnimation.startMapAnimation();
+        mapRadar.stopRadarAnimation();
+        mapRipple.stopRippleMapAnimation();
+        mapRipple.withNumberOfRipples(3);
+        mapRipple.withFillColor(Color.parseColor("#FFA3D2E4"));
+        mapRipple.withStrokewidth(0);      //0dp
+        mapRipple.startRippleMapAnimation();
+        startstoprippleBtn.setText("Stop Animation");
+        whichAnimationWasRunning = ANIMATION_TYPE_RIPPLE;
+    }
+
+    public void radarAnimation(View view) {
+        mapRipple.stopRippleMapAnimation();
+        mapRadar.startRadarAnimation();
+        startstoprippleBtn.setText("Stop Animation");
+        whichAnimationWasRunning = ANIMATION_TYPE_RADAR;
     }
 
     public void simpleRipple(View view) {
-        mapAnimation.stopMapAnimation();
-        mapAnimation.setMapAnimationType(MapAnimationType.RIPPLE);
-        mapAnimation.withNumberOfRipples(1);
-        mapAnimation.withFillColor(Color.parseColor("#00000000"));
-        mapAnimation.withStrokeColor(Color.BLACK);
-        mapAnimation.withStrokewidth(10);      // 10dp
-        mapAnimation.startMapAnimation();
+        mapRadar.stopRadarAnimation();
+        mapRipple.stopRippleMapAnimation();
+        mapRipple.withNumberOfRipples(1);
+        mapRipple.withFillColor(Color.parseColor("#00000000"));
+        mapRipple.withStrokeColor(Color.BLACK);
+        mapRipple.withStrokewidth(10);      // 10dp
+        mapRipple.startRippleMapAnimation();
+        startstoprippleBtn.setText("Stop Animation");
+        whichAnimationWasRunning = ANIMATION_TYPE_RIPPLE;
     }
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         try {
-            if (mapAnimation.isAnimationRunning()) {
-                mapAnimation.stopMapAnimation();
+            if (mapRipple.isAnimationRunning()) {
+                mapRipple.stopRippleMapAnimation();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -370,10 +404,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         @Override
         public void onLocationChanged(Location location) {
-            //            mapAnimation.withNumberOfRipples(3);
+            //            mapRipple.withNumberOfRipples(3);
             this.location = location;
 //            Toast.makeText(context, "  " + location.getLatitude() + ",  " + location.getLongitude(), Toast.LENGTH_SHORT).show();
-            mapAnimation.withLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
+            if (mapRipple.isAnimationRunning())
+                mapRipple.withLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
+            if (mapRadar.isAnimationRunning())
+                mapRadar.withLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
         }
 
         @Override

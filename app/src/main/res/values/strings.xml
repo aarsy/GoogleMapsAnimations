@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">GoogleMapsRippleEffect</string>
-    <string name="title_activity_maps">Maps Ripple</string>
+    <string name="app_name">GoogleMapsAnimations</string>
+    <string name="title_activity_maps">Maps Animations</string>
 </resources>

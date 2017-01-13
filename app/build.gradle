@@ -33,7 +33,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'com.google.android.gms:play-services:9.4.0'
-    compile project(':googlemapsrippleeffect')
+    compile project(':googlemapanimations')
     compile 'com.android.support:support-v4:24.0.0'
     compile 'com.android.support:multidex:1.0.1'
 }

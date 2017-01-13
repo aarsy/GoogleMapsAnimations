@@ -5,31 +5,52 @@
     android:layout_height="match_parent">
 
     <fragment
-    android:id="@+id/map"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.arsy.googlemapsrippleeffect.MapsActivity" />
-    <Button
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.arsy.googlemapsrippleeffect.MapsActivity" />
+
+    <LinearLayout
         android:layout_width="40dp"
         android:layout_height="match_parent"
         android:layout_above="@+id/startstopripple"
         android:layout_alignParentLeft="true"
         android:layout_margin="6dp"
-        android:background="@color/colorPrimary"
-        android:text="S\ni\nm\np\nl\ne\n\nR\ni\np\np\nl\ne"
-        android:onClick="simpleRipple"
-        android:textColor="#ffffff" />
+        android:orientation="vertical">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:onClick="simpleRipple"
+            android:text="S\ni\nm\np\nl\ne\n"
+            android:textColor="#ffffff" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="6dp"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:onClick="advancedRipple"
+            android:text="M\nu\nl\nt\ni\np\nl\ne"
+            android:textColor="#ffffff" />
+
+    </LinearLayout>
 
     <Button
         android:layout_width="40dp"
         android:layout_height="match_parent"
         android:layout_above="@+id/startstopripple"
         android:layout_alignParentRight="true"
-        android:layout_margin="6dp"
+        android:layout_marginBottom="6dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginTop="60dp"
         android:background="@color/colorPrimary"
-        android:onClick="advancedRipple"
-        android:text="M\nu\nl\nt\ni\np\nl\ne\n\nR\ni\np\np\nl\ne\ns"
+        android:onClick="radarAnimation"
+        android:text="R\na\nd\na\nr\n"
         android:textColor="#ffffff" />
 
     <Button
