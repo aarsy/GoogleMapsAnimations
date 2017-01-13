@@ -1,14 +1,6 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
-        config {
-            keyAlias 'aarsy'
-            keyPassword 'shubhamsingh1995'
-            storeFile file('D:/GoogleMapsRipple.jks`')
-            storePassword 'shubhamsingh1995'
-        }
-    }
     compileSdkVersion 24
     buildToolsVersion "23.0.3"
     defaultConfig {
@@ -23,7 +15,6 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
         }
     }
 }
