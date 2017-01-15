@@ -1,4 +1,4 @@
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-GoogleMapsRippleEffect-green.svg?style=true)](https://android-arsenal.com/details/1/4126)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-GoogleMapsAnimations-green.svg?style=true)](https://android-arsenal.com/details/1/5070)
 
 # GoogleMapsAnimations        
 
