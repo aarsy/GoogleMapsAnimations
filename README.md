@@ -156,6 +156,13 @@ Use **.mapRadar.withLatLng(LatLng changedLatlng)** method anytime in future to u
        
 ------
 
+#Build the sample
+To build the sample project, enable the project explorer under Android view, just go to res/values and find **google_maps_api.xml(debug)**. Generate a google maps API key for yourself and enter it in this file, the SHA-1 fingerprint already given in the file is mine but you should generate your own. Follow these if you need some help.
+http://stackoverflow.com/questions/15727912/sha-1-fingerprint-of-keystore-certificate
+https://developers.google.com/maps/documentation/android-api/start
+
+------
+
 #Compatibility
 
 **Minimum Android SDK**: This library requires a minimum API level of **11**.    
