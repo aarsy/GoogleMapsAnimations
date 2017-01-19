@@ -10,12 +10,12 @@ ext {
     libraryName = 'googlemapsanimations'
     artifact = 'googlemapsanimations'
 
-    libraryDescription = '"GoogleMapsRippleEffect" is an awesome android library for developers who need to show radar effect or multiple types of circular ripple effects on google map'
+    libraryDescription = '"GoogleMapsAnimations" is an awesome android library for developers who need to show radar effect or multiple types of circular ripple effects on google map'
 
     siteUrl = 'https://github.com/aarsy/GoogleMapsAnimations'
     gitUrl = 'https://github.com/aarsy/GoogleMapsAnimations.git'
 
-    libraryVersion = '1.0.0'
+    libraryVersion = '1.0.5'
 
     developerId = 'aarsy'
     developerName = 'Abhay Raj Singh Yadav'
@@ -34,7 +34,7 @@ android {
         minSdkVersion 11
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0.0"
+        versionName "1.0.5"
     }
     buildTypes {
         release {
@@ -102,6 +102,11 @@ if (project.hasProperty("android")) { // Android libraries
         source = android.sourceSets.main.java.srcDirs
         classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
     }
+    afterEvaluate {
+        javadoc.classpath += files(android.libraryVariants.collect { variant ->
+            variant.javaCompile.classpath.files
+        })
+    }
 } else { // Java libraries
     task sourcesJar(type: Jar, dependsOn: classes) {
         classifier = 'sources'
@@ -115,7 +120,7 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 }
 
 artifacts {
-    archives javadocJar
+    //archives javadocJar
     archives sourcesJar
 }
 

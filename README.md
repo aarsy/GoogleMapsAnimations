@@ -10,16 +10,16 @@ Below samples show the ripple effect in action:
 
 ------    
 
-#Download (These are not working for now. Please download the package manually until this issue is resolved)
+#Download
 ###Using Gradle: under dependencies section:   
   
-    compile 'com.github.aarsy.googlemapsanimations:googlemapsanimations:1.0.3'
+    compile 'com.github.aarsy.googlemapsanimations:googlemapsanimations:1.0.5'
 
 ### or Using Maven:
     <dependency>
         <groupId>com.github.aarsy.googlemapsanimations</groupId>
         <artifactId>googlemapsanimations</artifactId>
-        <version>1.0.3</version>
+        <version>1.0.5</version>
         <type>pom</type>
     </dependency>
 

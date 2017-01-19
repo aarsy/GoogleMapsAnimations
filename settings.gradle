@@ -1,1 +1,1 @@
-include ':app', ':googlemapanimations'
+include ':app', ':googlemapsanimations'
