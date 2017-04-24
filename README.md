@@ -10,8 +10,8 @@ Below samples show the ripple effect in action:
 
 ------    
 
-#Download
-###Using Gradle: under dependencies section:   
+# Download    
+### Using Gradle: under dependencies section:   
   
     compile 'com.github.aarsy.googlemapsanimations:googlemapsanimations:1.0.5'
 
@@ -25,11 +25,11 @@ Below samples show the ripple effect in action:
 
 ------
 
-#Documentation
+# Documentation
 
-##Ripple Animation
+## Ripple Animation
 
-###Default Ripple animation
+### Default Ripple animation
 Just two lines of code :  
 Use **.startRippleMapAnimation()** and **.stopRippleMapAnimation()** methods to start and stop Animation.     
 Example is given below (Preview shown above in first sample)
@@ -52,7 +52,7 @@ Example is given below (Preview shown above in first sample)
                 }
      
 
-###Advanced Ripple animation
+### Advanced Ripple animation
 
 Example is given below (Preview shown above in second sample)
   
@@ -69,7 +69,7 @@ Example is given below (Preview shown above in second sample)
                 mapRipple.startRippleMapAnimation();
         // Use same procedure to stop Animation and start it again as mentioned anove in Default Ripple Animation Sample
 
-###Update center of ripple as location changes(Needed when user moves)
+### Update center of ripple as location changes(Needed when user moves)
 Just one line of code is needed:  
 Use **.mapRipple.withLatLng(LatLng changedLatlng)** method anytime in future to update center of ripple.
   
@@ -83,9 +83,9 @@ Use **.mapRipple.withLatLng(LatLng changedLatlng)** method anytime in future to 
 ------
 	
 	
-##Radar Animation
+## Radar Animation
 
-###Simple Clockwise Radar animation
+### Simple Clockwise Radar animation
 Just two lines of code :  
 Use **.startRadarAnimation()** and **.stopRadarAnimation()** methods to start and stop Animation.     
 Example is given below (Preview shown above in third sample)
@@ -111,7 +111,7 @@ Example is given below (Preview shown above in third sample)
 
 
 
-###Advanced Clockwise and AntiClockwise Radar animation
+### Advanced Clockwise and AntiClockwise Radar animation
 
 Example is given below (Preview shown above in fourth sample)
   
@@ -143,7 +143,7 @@ Example is given below (Preview shown above in fourth sample)
                     }
                 }
 
-###Update center of radar as location changes(Needed when user moves)
+### Update center of radar as location changes(Needed when user moves)
 Just one line of code is needed:  
 Use **.mapRadar.withLatLng(LatLng changedLatlng)** method anytime in future to update center of radar.    
   
@@ -169,7 +169,7 @@ https://developers.google.com/maps/documentation/android-api/start
 
 ------
 
-#License
+# License
 Copyright 2016 Abhay Raj Singh Yadav(arsy).
 
    Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
