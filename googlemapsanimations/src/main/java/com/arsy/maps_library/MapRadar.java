@@ -13,28 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package com.arsy.maps_library;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.RectF;
-import android.graphics.Shader;
-import android.graphics.SweepGradient;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.GroundOverlay;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -43,237 +32,259 @@ import com.google.android.gms.maps.model.LatLng;
  * Created by abhay yadav on 12-Jan-17.
  */
 public class MapRadar {
-
-    private GoogleMap googleMap;
-    private LatLng latLng, prevlatlng;
-    private Bitmap backgroundImage, backgroundImageSweep;                     //ripple image.
-    private float transparency = 0.5f;                    //transparency of image.
-    private volatile int distance = 2000;                       //distance to which ripple should be shown in metres
-    private int fillColor = Color.TRANSPARENT;           //fillcolor of circle
-    private int strokeColor = Color.parseColor("#38728f");               //border color of circle
-    private int strokewidth = 4;                          //border width of circle
-    private GradientDrawable outerDrawable, radarDrawable;
+    private GoogleMap mGoogleMap;
+    private LatLng mLatLng, mPrevLatLng;
+    private BitmapDescriptor mBackgroundImageDescriptor, mBackgroundImageSweepDescriptor;             //ripple image.
+    private float mTransparency = 0.5f;                                 //transparency of image.
+    private volatile int mDistance = 2000;                              //distance to which ripple should be shown in metres
+    private int mFillColor = Color.TRANSPARENT;                         //fill color of circle
+    private int mStrokeColor = 0x38728f;                                //border color of circle
+    private int mStrokeWidth = 4;                                       //border width of circle
+    private GradientDrawable mOuterDrawable;
     private boolean isAnimationRunning = false;
-    private Handler sweepHandler, outerHandler;
-    private int rotationAngle = 0;
-    private boolean isthreesixty = false;
-    private GroundOverlay gOverlaySweep, gOverlay;
-    private ValueAnimator vAnimatorSweep;
-    private float sweeptransparency = 0.5f;                    //transparency of image.
-    private boolean sweepAnimationClockWiseAnticlockwise = false;
-    private int sweepAnimationClockwiseAnticlockwiseDuration = 1;
-    private int sweepSpeed = 2;                     //increase this to increase speed
-    private int angle = 0;
-    private int colors[] = {Color.parseColor("#0038728f"), Color.parseColor("#ff38728f")};    //sweep animation colors
+    private Handler mSweepHandler, mOuterHandler;
+    private int mRotationAngle = 0;
+    private boolean isThreeSixty = false;
+    private GroundOverlay mGroundOverlaySweep, mGroundOverlay;
+    private ValueAnimator mAnimatorSweep;
+    private float mSweepTransparency = 0.5f;                            //transparency of image.
+    private boolean mSweepAnimationClockwiseAnticlockwise = false;
+    private int mSweepAnimationClockwiseAnticlockwiseDuration = 1;
+    private int mSweepSpeed = 2;                                        //increase this to increase speed
+    private int mCurrentAngle = 0;
+    private int mColors[] = {0x0038728f, 0xff38728f};                   //sweep animation colors
 
     public MapRadar(GoogleMap googleMap, LatLng latLng, Context context) {
-        this.googleMap = googleMap;
-        this.latLng = latLng;
-        this.prevlatlng = latLng;
-        outerDrawable = (GradientDrawable) context.getResources().getDrawable(R.drawable.background);
+        mGoogleMap = googleMap;
+        mLatLng = latLng;
+        mPrevLatLng = latLng;
+        mOuterDrawable = (GradientDrawable) ContextCompat.getDrawable(context, R.drawable.background);
     }
 
-    public void withOuterCircleTransparency(float transparency) {
-        this.transparency = transparency;
-    }
-
-    public void withRadarTransparency(float transparency) {
-        this.sweeptransparency = transparency;
-    }
-
-    public boolean isRadarAnimationClockWiseAnticlockwise() {
-        return sweepAnimationClockWiseAnticlockwise;
-    }
-
-    public void withClockWiseAnticlockwise(boolean sweepAnimationClockWiseAnticlockwise) {
-        this.sweepAnimationClockWiseAnticlockwise = sweepAnimationClockWiseAnticlockwise;
-    }
-
+    /**
+     * @return current duration of animation
+     */
     public int getClockwiseAnticlockwiseDuration() {
-        return sweepAnimationClockwiseAnticlockwiseDuration;
+        return mSweepAnimationClockwiseAnticlockwiseDuration;
     }
 
-    public void withClockwiseAnticlockwiseDuration(int sweepAnimationClockwiseAnticlockwiseDuration) {
-        this.sweepAnimationClockwiseAnticlockwiseDuration = sweepAnimationClockwiseAnticlockwiseDuration;
-    }
-
-    public void withRadarColors(int startColor, int tailColor) {
-        colors[0] = startColor;
-        colors[1] = tailColor;
-    }
-
+    /**
+     * @return current radar rotation speed
+     */
     public int getRadarSpeed() {
-        return sweepSpeed;
+        return mSweepSpeed;
     }
 
-    public void withRadarSpeed(int sweepSpeed) {
-        this.sweepSpeed = sweepSpeed;
+    /**
+     * @return current state of both side rotation
+     */
+    public boolean isRadarAnimationClockWiseAnticlockwise() {
+        return mSweepAnimationClockwiseAnticlockwise;
     }
 
-    public void withDistance(int distance) {
-        if (distance < 200)
-            distance = 200;
-        this.distance = distance;
-    }
-
-    public void withLatLng(LatLng latLng) {
-        prevlatlng = this.latLng;
-        this.latLng = latLng;
-    }
-
-    public void withOuterCircleFillColor(int fillColor) {
-        this.fillColor = fillColor;
-    }
-
-    public void withOuterCircleStrokeColor(int strokeColor) {
-        this.strokeColor = strokeColor;
-
-    }
-
-    public void withOuterCircleStrokewidth(int strokewidth) {
-        this.strokewidth = strokewidth;
-    }
-
+    /**
+     * @return current state of animation
+     */
     public boolean isAnimationRunning() {
         return isAnimationRunning;
     }
 
+    /**
+     * @param transparency sets end transparency for circle
+     */
+    public MapRadar withOuterCircleTransparency(float transparency) {
+        mTransparency = transparency;
+        return this;
+    }
 
-    final Runnable sweepRunnable = new Runnable() {
+    /**
+     * @param transparency sets transparency for background of circle
+     */
+    public MapRadar withRadarTransparency(float transparency) {
+        mSweepTransparency = transparency;
+        return this;
+    }
+
+    /**
+     * @param sweepAnimationClockWiseAnticlockwise enable both side rotation
+     */
+    public MapRadar withClockwiseAnticlockwise(boolean sweepAnimationClockWiseAnticlockwise) {
+        mSweepAnimationClockwiseAnticlockwise = sweepAnimationClockWiseAnticlockwise;
+        return this;
+    }
+
+    /**
+     * @deprecated use {@link #withClockwiseAnticlockwise(boolean)} instead
+     */
+    @Deprecated
+    public void withClockWiseAnticlockwise(boolean sweepAnimationClockWiseAnticlockwise) {
+        withClockwiseAnticlockwise(sweepAnimationClockWiseAnticlockwise);
+    }
+
+    /**
+     * @param sweepAnimationClockWiseAnticlockwiseDuration duration of animation
+     */
+    public MapRadar withClockwiseAnticlockwiseDuration(int sweepAnimationClockWiseAnticlockwiseDuration) {
+        mSweepAnimationClockwiseAnticlockwiseDuration = sweepAnimationClockWiseAnticlockwiseDuration;
+        return this;
+    }
+
+    /**
+     * @param startColor start color of radar gradient
+     * @param tailColor  end color of radar gradient
+     */
+    public MapRadar withRadarColors(int startColor, int tailColor) {
+        mColors[0] = startColor;
+        mColors[1] = tailColor;
+        return this;
+    }
+
+    /**
+     * @param sweepSpeed radar rotation speed
+     */
+    public MapRadar withRadarSpeed(int sweepSpeed) {
+        mSweepSpeed = sweepSpeed;
+        return this;
+    }
+
+    /**
+     * @param distance sets radius distance for circle
+     */
+    public MapRadar withDistance(int distance) {
+        if (distance < 200) {
+            distance = 200;
+        }
+        mDistance = distance;
+        return this;
+    }
+
+    /**
+     * @param latLng sets position for center of circle
+     */
+    public MapRadar withLatLng(LatLng latLng) {
+        mPrevLatLng = mLatLng;
+        mLatLng = latLng;
+        return this;
+    }
+
+    /**
+     * @param fillColor inner color of circle
+     */
+    public MapRadar withOuterCircleFillColor(int fillColor) {
+        mFillColor = fillColor;
+        return this;
+    }
+
+    /**
+     * @param strokeColor color of circle stroke
+     */
+    public MapRadar withOuterCircleStrokeColor(int strokeColor) {
+        mStrokeColor = strokeColor;
+        return this;
+    }
+
+    @Deprecated
+    public void withOuterCircleStrokewidth(int strokeWidth) {
+        withOuterCircleStrokeWidth(strokeWidth);
+    }
+
+    /**
+     * @param strokeWidth width of circle stroke
+     */
+    public MapRadar withOuterCircleStrokeWidth(int strokeWidth) {
+        mStrokeWidth = strokeWidth;
+        return this;
+    }
+
+    private final Runnable mSweepRunnable = new Runnable() {
         @Override
         public void run() {
-            gOverlaySweep = googleMap.addGroundOverlay(new
-                    GroundOverlayOptions()
-                    .position(latLng, distance)
-                    .transparency(sweeptransparency)
-                    .image(BitmapDescriptorFactory.fromBitmap(backgroundImageSweep)));
+            mGroundOverlaySweep = mGoogleMap.addGroundOverlay(new GroundOverlayOptions()
+                    .position(mLatLng, mDistance)
+                    .transparency(mSweepTransparency)
+                    .image(mBackgroundImageSweepDescriptor));
             AnimateSweep();
-
         }
     };
 
-    final Runnable runnable = new Runnable() {
+    private final Runnable mRadarRunnable = new Runnable() {
         @Override
         public void run() {
-            gOverlay = googleMap.addGroundOverlay(new
-                    GroundOverlayOptions()
-                    .position(latLng, distance + strokewidth)
-                    .transparency(transparency)
-                    .image(BitmapDescriptorFactory.fromBitmap(backgroundImage)));
+            mGroundOverlay = mGoogleMap.addGroundOverlay(new GroundOverlayOptions()
+                    .position(mLatLng, mDistance + mStrokeWidth)
+                    .transparency(mTransparency)
+                    .image(mBackgroundImageDescriptor));
         }
     };
 
     private void AnimateSweep() {
-        vAnimatorSweep = ValueAnimator.ofInt(0, 360);
-        vAnimatorSweep.setRepeatCount(ValueAnimator.INFINITE);
-        vAnimatorSweep.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        mAnimatorSweep = ValueAnimator.ofInt(0, 360);
+        mAnimatorSweep.setRepeatCount(ValueAnimator.INFINITE);
+        mAnimatorSweep.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                if (sweepAnimationClockWiseAnticlockwise) {
-                    if ((angle) >= (360 * 2 * sweepAnimationClockwiseAnticlockwiseDuration))
-                        isthreesixty = true;
-                    if (angle <= 0)
-                        isthreesixty = false;
-                    if (isthreesixty) {
-                        rotationAngle = (rotationAngle - sweepSpeed) % 360;
-                        angle = angle - sweepSpeed;
+                if (mSweepAnimationClockwiseAnticlockwise) {
+                    if ((mCurrentAngle) >= (360 * 2 * mSweepAnimationClockwiseAnticlockwiseDuration)) {
+                        isThreeSixty = true;
+                    }
+                    if (mCurrentAngle <= 0) {
+                        isThreeSixty = false;
+                    }
+                    if (isThreeSixty) {
+                        mRotationAngle = (mRotationAngle - mSweepSpeed) % 360;
+                        mCurrentAngle = mCurrentAngle - mSweepSpeed;
                     } else {
-                        rotationAngle = (rotationAngle + sweepSpeed) % 360;
-                        angle = angle + sweepSpeed;
+                        mRotationAngle = (mRotationAngle + mSweepSpeed) % 360;
+                        mCurrentAngle = mCurrentAngle + mSweepSpeed;
                     }
                 } else {
-                    rotationAngle = (rotationAngle + sweepSpeed) % 360;
+                    mRotationAngle = (mRotationAngle + mSweepSpeed) % 360;
                 }
-                gOverlaySweep.setBearing(rotationAngle);
-                if (latLng != prevlatlng) {
-                    gOverlaySweep.setPosition(latLng);
+                mGroundOverlaySweep.setBearing(mRotationAngle);
+                if (mLatLng != mPrevLatLng) {
+                    mGroundOverlaySweep.setPosition(mLatLng);
                 }
             }
         });
-        vAnimatorSweep.start();
-
-
+        mAnimatorSweep.start();
     }
 
     private void setDrawableAndBitmap() {
-
-        outerDrawable.setColor(fillColor);
-        float d = Resources.getSystem().getDisplayMetrics().density;
-        int width = (int) (strokewidth * d); // margin in pixels
-        outerDrawable.setStroke(width, strokeColor);
-        backgroundImage = drawableToBitmap(outerDrawable);
-        radarDrawable = new GradientDrawable(GradientDrawable.Orientation.TL_BR, colors);
+        mOuterDrawable.setColor(mFillColor);
+        mOuterDrawable.setStroke(UiUtil.dpToPx(mStrokeWidth), mStrokeColor);
+        mBackgroundImageDescriptor = UiUtil.drawableToBitmapDescriptor(mOuterDrawable);
+        GradientDrawable radarDrawable = new GradientDrawable(GradientDrawable.Orientation.TL_BR, mColors);
         radarDrawable.setGradientType(GradientDrawable.SWEEP_GRADIENT);
         radarDrawable.setShape(GradientDrawable.OVAL);
         radarDrawable.setSize(1200, 1200);
-        backgroundImageSweep = drawableToBitmap(radarDrawable);
-
+        mBackgroundImageSweepDescriptor = UiUtil.drawableToBitmapDescriptor(radarDrawable);
     }
 
-    private Bitmap drawableToBitmap(Drawable drawable) {
-        Bitmap bitmap = null;
-
-        if (drawable instanceof BitmapDrawable) {
-            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-            if (bitmapDrawable.getBitmap() != null) {
-                return bitmapDrawable.getBitmap();
-            }
-        }
-        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
-            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
-        } else {
-            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        }
-
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-        return bitmap;
-    }
-
-
+    /**
+     * Starts animation
+     */
     public void startRadarAnimation() {
         setDrawableAndBitmap();
         if (!isAnimationRunning) {
-            sweepHandler = new Handler();
-            sweepHandler.post(sweepRunnable);
-            outerHandler = new Handler();
-            outerHandler.post(runnable);
+            mSweepHandler = new Handler();
+            mSweepHandler.post(mSweepRunnable);
+            mOuterHandler = new Handler();
+            mOuterHandler.post(mRadarRunnable);
+            isAnimationRunning = true;
         }
-        isAnimationRunning = true;
     }
 
-
+    /**
+     * Stops current animation if it's running
+     */
     public void stopRadarAnimation() {
         if (isAnimationRunning) {
-            sweepHandler.removeCallbacks(sweepRunnable);
-            vAnimatorSweep.cancel();
-            gOverlaySweep.remove();
-            outerHandler.removeCallbacks(runnable);
-            gOverlay.remove();
+            mSweepHandler.removeCallbacks(mSweepRunnable);
+            mAnimatorSweep.cancel();
+            mGroundOverlaySweep.remove();
+            mOuterHandler.removeCallbacks(mRadarRunnable);
+            mGroundOverlay.remove();
+            isAnimationRunning = false;
         }
-        isAnimationRunning = false;
-    }
-
-    //not needed for now
-    private Bitmap drawToBitmap() {
-
-        int radarColor = Color.parseColor("#ffffff");
-        Bitmap.Config config = Bitmap.Config.ARGB_8888;
-        Bitmap bitmap = Bitmap.createBitmap(distance, distance, config);
-        Bitmap workingBitmap = Bitmap.createBitmap(bitmap);
-        Bitmap mutableBitmap = workingBitmap.copy(Bitmap.Config.ARGB_8888, true);
-        Canvas canvas = new Canvas((workingBitmap));
-        Paint mPaintRadar = new Paint();
-        mPaintRadar.setColor(radarColor);
-        mPaintRadar.setAntiAlias(true);
-        Shader shader = new SweepGradient(0, 0, Color.parseColor("#00000000"),
-                Color.parseColor("#ff000000"));
-        mPaintRadar.setShader(shader);
-        //canvas.concat(matrix);
-        RectF rect = new RectF(0, 0, distance, distance);
-        canvas.drawRoundRect(rect, distance / 2, distance / 2, mPaintRadar);
-        //canvas.drawCircle(0, 0, w/2, mPaintRadar);
-        return workingBitmap;
     }
 }
