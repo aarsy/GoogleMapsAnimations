@@ -13,16 +13,16 @@ Below samples show the ripple effect in action:
 # Download    
 ### Using Gradle: under dependencies section:   
 ```gradle
-    compile 'com.github.aarsy.googlemapsanimations:googlemapsanimations:1.0.5'
+compile 'com.github.aarsy.googlemapsanimations:googlemapsanimations:1.0.5'
 ```
 ### or Using Maven:
 ```xml  
-    <dependency>
-        <groupId>com.github.aarsy.googlemapsanimations</groupId>
-        <artifactId>googlemapsanimations</artifactId>
-        <version>1.0.5</version>
-        <type>pom</type>
-    </dependency>
+<dependency>
+    <groupId>com.github.aarsy.googlemapsanimations</groupId>
+    <artifactId>googlemapsanimations</artifactId>
+    <version>1.0.5</version>
+    <type>pom</type>
+</dependency>
 ```
 
 ------
@@ -36,50 +36,50 @@ Just two lines of code :
 Use **.startRippleMapAnimation()** and **.stopRippleMapAnimation()** methods to start and stop Animation.     
 Example is given below (Preview shown above in first sample)    
 ```java  
-    // mMap is GoogleMap object, latLng is the location on map from which ripple should start
-    MapRipple mapRipple = new MapRipple(mMap, latLng, context);
-    mapRipple.startRippleMapAnimation();      //in onMapReadyCallBack
+// mMap is GoogleMap object, latLng is the location on map from which ripple should start
+MapRipple mapRipple = new MapRipple(mMap, latLng, context);
+mapRipple.startRippleMapAnimation();      //in onMapReadyCallBack
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (mapRipple.isAnimationRunning()) {
-            mapRipple.stopRippleMapAnimation();
-        }
+@Override
+protected void onStop() {
+    super.onStop();
+    if (mapRipple.isAnimationRunning()) {
+        mapRipple.stopRippleMapAnimation();
     }
-    
-    // Start Animation again only if it is not running
-    if (!mapRipple.isAnimationRunning()) {
-        mapRipple.startRippleMapAnimation();
-    }
+}
+
+// Start Animation again only if it is not running
+if (!mapRipple.isAnimationRunning()) {
+    mapRipple.startRippleMapAnimation();
+}
 ```
 ### Advanced Ripple animation
 
 Example is given below (Preview shown above in second sample)    
 ```java  
-    // mMap is GoogleMap object, latLng is the location on map from which ripple should start
-    MapRipple mapRipple = new MapRipple(mMap, latLng, context)
-                                .withNumberOfRipples(3)
-                                .withFillColor(Color.BLUE)
-                                .withStrokeColor(Color.BLACK)
-                                .withStrokewidth(10)      // 10dp
-                                .withDistance(2000)      // 2000 metres radius
-                                .withRippleDuration(12000)    //12000ms
-                                .withTransparency(0.5f);
-                        
-    mapRipple.startRippleMapAnimation();
-    // Use same procedure to stop Animation and start it again as mentioned anove in Default Ripple Animation Sample
+// mMap is GoogleMap object, latLng is the location on map from which ripple should start
+MapRipple mapRipple = new MapRipple(mMap, latLng, context)
+                            .withNumberOfRipples(3)
+                            .withFillColor(Color.BLUE)
+                            .withStrokeColor(Color.BLACK)
+                            .withStrokewidth(10)      // 10dp
+                            .withDistance(2000)      // 2000 metres radius
+                            .withRippleDuration(12000)    //12000ms
+                            .withTransparency(0.5f);
+                    
+mapRipple.startRippleMapAnimation();
+// Use same procedure to stop Animation and start it again as mentioned anove in Default Ripple Animation Sample
 ```
 ### Update center of ripple as location changes(Needed when user moves)
 Just one line of code is needed:  
 Use **.mapRipple.withLatLng(LatLng changedLatlng)** method anytime in future to update center of ripple.    
 ```java  
-  	// after implementing LocationListener interface to current class use:
-    @Override
-    public void onLocationChanged(Location location) {
-        mapRipple.withLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
-    }
-	//See the sample for more help.
+// after implementing LocationListener interface to current class use:
+@Override
+public void onLocationChanged(Location location) {
+    mapRipple.withLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
+}
+//See the sample for more help.
 ```
 ## Radar Animation
 
@@ -88,65 +88,65 @@ Just two lines of code :
 Use **.startRadarAnimation()** and **.stopRadarAnimation()** methods to start and stop Animation.     
 Example is given below (Preview shown above in third sample)    
 ```java  
-    // mMap is GoogleMap object, latLng is the location on map from which ripple should start
-    MapRadar mapRadar = new MapRadar(mMap, latLng, context)
-                                .withDistance(2000)
-                                .withOuterCircleStrokeColor(0xfccd29)
-                                .withRadarColors(0x00fccd29, 0xfffccd29)
-                                //withRadarColors() have two parameters, startColor and tailColor respectively
-                                //startColor should start with transparency, here 00 in front of fccd29 indicates fully transparent
-                                //tailColor should end with opaqueness, here f in front of fccd29 indicates fully opaque
-                                .startRadarAnimation();      //in onMapReadyCallBack
-    
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (mapRadar.isAnimationRunning()) {
-            mapRadar.stopRadarAnimation();
-        }
+// mMap is GoogleMap object, latLng is the location on map from which ripple should start
+MapRadar mapRadar = new MapRadar(mMap, latLng, context)
+                            .withDistance(2000)
+                            .withOuterCircleStrokeColor(0xfccd29)
+                            .withRadarColors(0x00fccd29, 0xfffccd29)
+                            //withRadarColors() have two parameters, startColor and tailColor respectively
+                            //startColor should start with transparency, here 00 in front of fccd29 indicates fully transparent
+                            //tailColor should end with opaqueness, here f in front of fccd29 indicates fully opaque
+                            .startRadarAnimation();      //in onMapReadyCallBack
+
+@Override
+protected void onStop() {
+    super.onStop();
+    if (mapRadar.isAnimationRunning()) {
+        mapRadar.stopRadarAnimation();
     }
+}
 ```
 ### Advanced Clockwise and AntiClockwise Radar animation
 
 Example is given below (Preview shown above in fourth sample)    
 ```java  
-    // mMap is GoogleMap object, latLng is the location on map from which ripple should start
-    MapRadar mapRadar = new MapRadar(mMap, latLng, context)
-                                .withDistance(2000)
-                                .withOuterCircleStrokeColor(0xfccd29)
-                                .withOuterCircleStrokewidth(7)
-                                .withOuterCircleTransparency(0.4f)
-                                .withClockWiseAnticlockwise(true)		//enable both side rotation
-                                .withClockwiseAnticlockwiseDuration(2)
-                                //withClockwiseAnticlockwiseDuration(duration), here duration denotes how much cycles should animation makes in 
-                                //one direction
-                                .withOuterCircleFillColor(0x12000000)
-                                .withRadarColors(0x00fccd29, 0xfffccd29);
-                                //withRadarColors() have two parameters, startColor and tailColor respectively
-                                //startColor should start with transparency, here 00 in front of fccd29 indicates fully transparent
-                                //tailColor should end with opaqueness, here f in front of fccd29 indicates fully opaque
-                                .withRadarSpeed(5) //controls radar speed
-                                .withRadarTransparency(0.4f);
-                                .startRadarAnimation();      //in onMapReadyCallBack
-    
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (mapRadar.isAnimationRunning()) {
-            mapRadar.stopRadarAnimation();
-        }
+// mMap is GoogleMap object, latLng is the location on map from which ripple should start
+MapRadar mapRadar = new MapRadar(mMap, latLng, context)
+                            .withDistance(2000)
+                            .withOuterCircleStrokeColor(0xfccd29)
+                            .withOuterCircleStrokewidth(7)
+                            .withOuterCircleTransparency(0.4f)
+                            .withClockWiseAnticlockwise(true)		//enable both side rotation
+                            .withClockwiseAnticlockwiseDuration(2)
+                            //withClockwiseAnticlockwiseDuration(duration), here duration denotes how much cycles should animation makes in 
+                            //one direction
+                            .withOuterCircleFillColor(0x12000000)
+                            .withRadarColors(0x00fccd29, 0xfffccd29)
+                            //withRadarColors() have two parameters, startColor and tailColor respectively
+                            //startColor should start with transparency, here 00 in front of fccd29 indicates fully transparent
+                            //tailColor should end with opaqueness, here f in front of fccd29 indicates fully opaque
+                            .withRadarSpeed(5) //controls radar speed
+                            .withRadarTransparency(0.4f);
+mapRadar.startRadarAnimation();      //in onMapReadyCallBack
+
+@Override
+protected void onStop() {
+    super.onStop();
+    if (mapRadar.isAnimationRunning()) {
+        mapRadar.stopRadarAnimation();
     }
+}
 ```
 ### Update center of radar as location changes(Needed when user moves)
 Just one line of code is needed:  
 Use **.mapRadar.withLatLng(LatLng changedLatlng)** method anytime in future to update center of radar.    
 ```java  
-  	// after implementing LocationListener interface to current class use:
-    @Override
-    public void onLocationChanged(Location location) {
-        mapRadar.withLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
-    }
-	//See the sample for more help.
+// after implementing LocationListener interface to current class use:
+@Override
+public void onLocationChanged(Location location) {
+    mapRadar.withLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
+}
+//See the sample for more help.
 ```
 # Build the sample
 To build the sample project, enable the project explorer under Android view, just go to res/values and find **google_maps_api.xml(debug)**. Generate a google maps API key for yourself and enter it in this file, the SHA-1 fingerprint already given in the file is mine but you should generate your own. Follow these if you need some help.
