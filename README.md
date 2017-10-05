@@ -12,16 +12,18 @@ Below samples show the ripple effect in action:
 
 # Download    
 ### Using Gradle: under dependencies section:   
-  
+```gradle
     compile 'com.github.aarsy.googlemapsanimations:googlemapsanimations:1.0.5'
-
+```
 ### or Using Maven:
+```xml  
     <dependency>
         <groupId>com.github.aarsy.googlemapsanimations</groupId>
         <artifactId>googlemapsanimations</artifactId>
         <version>1.0.5</version>
         <type>pom</type>
     </dependency>
+```
 
 ------
 
@@ -32,8 +34,8 @@ Below samples show the ripple effect in action:
 ### Default Ripple animation
 Just two lines of code :  
 Use **.startRippleMapAnimation()** and **.stopRippleMapAnimation()** methods to start and stop Animation.     
-Example is given below (Preview shown above in first sample)
-  
+Example is given below (Preview shown above in first sample)    
+```java  
     // mMap is GoogleMap object, latLng is the location on map from which ripple should start
     MapRipple mapRipple = new MapRipple(mMap, latLng, context);
     mapRipple.startRippleMapAnimation();      //in onMapReadyCallBack
@@ -50,11 +52,11 @@ Example is given below (Preview shown above in first sample)
     if (!mapRipple.isAnimationRunning()) {
         mapRipple.startRippleMapAnimation();
     }
-     
+```
 ### Advanced Ripple animation
 
-Example is given below (Preview shown above in second sample)
-  
+Example is given below (Preview shown above in second sample)    
+```java  
     // mMap is GoogleMap object, latLng is the location on map from which ripple should start
     MapRipple mapRipple = new MapRipple(mMap, latLng, context)
                                 .withNumberOfRipples(3)
@@ -67,25 +69,25 @@ Example is given below (Preview shown above in second sample)
                         
     mapRipple.startRippleMapAnimation();
     // Use same procedure to stop Animation and start it again as mentioned anove in Default Ripple Animation Sample
-
+```
 ### Update center of ripple as location changes(Needed when user moves)
 Just one line of code is needed:  
-Use **.mapRipple.withLatLng(LatLng changedLatlng)** method anytime in future to update center of ripple.
-  
+Use **.mapRipple.withLatLng(LatLng changedLatlng)** method anytime in future to update center of ripple.    
+```java  
   	// after implementing LocationListener interface to current class use:
     @Override
     public void onLocationChanged(Location location) {
         mapRipple.withLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
     }
 	//See the sample for more help.
-	
+```
 ## Radar Animation
 
 ### Simple Clockwise Radar animation
 Just two lines of code :  
 Use **.startRadarAnimation()** and **.stopRadarAnimation()** methods to start and stop Animation.     
-Example is given below (Preview shown above in third sample)
-  
+Example is given below (Preview shown above in third sample)    
+```java  
     // mMap is GoogleMap object, latLng is the location on map from which ripple should start
     MapRadar mapRadar = new MapRadar(mMap, latLng, context)
                                 .withDistance(2000)
@@ -103,11 +105,11 @@ Example is given below (Preview shown above in third sample)
             mapRadar.stopRadarAnimation();
         }
     }
-
+```
 ### Advanced Clockwise and AntiClockwise Radar animation
 
-Example is given below (Preview shown above in fourth sample)
-  
+Example is given below (Preview shown above in fourth sample)    
+```java  
     // mMap is GoogleMap object, latLng is the location on map from which ripple should start
     MapRadar mapRadar = new MapRadar(mMap, latLng, context)
                                 .withDistance(2000)
@@ -134,18 +136,18 @@ Example is given below (Preview shown above in fourth sample)
             mapRadar.stopRadarAnimation();
         }
     }
-
+```
 ### Update center of radar as location changes(Needed when user moves)
 Just one line of code is needed:  
 Use **.mapRadar.withLatLng(LatLng changedLatlng)** method anytime in future to update center of radar.    
-  
+```java  
   	// after implementing LocationListener interface to current class use:
     @Override
     public void onLocationChanged(Location location) {
         mapRadar.withLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
     }
 	//See the sample for more help.
-       
+```
 # Build the sample
 To build the sample project, enable the project explorer under Android view, just go to res/values and find **google_maps_api.xml(debug)**. Generate a google maps API key for yourself and enter it in this file, the SHA-1 fingerprint already given in the file is mine but you should generate your own. Follow these if you need some help.
 http://stackoverflow.com/questions/15727912/sha-1-fingerprint-of-keystore-certificate
