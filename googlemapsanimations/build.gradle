@@ -27,15 +27,16 @@ ext {
 }
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion setup.compileSdkVersion
+    buildToolsVersion setup.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 11
-        targetSdkVersion 25
+        minSdkVersion setup.minSdkVersion
+        targetSdkVersion setup.targetSdkVersion
         versionCode 1
         versionName "1.0.5"
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -45,9 +46,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile 'com.google.android.gms:play-services-maps:10.0.1'
+    compile "com.google.android.gms:play-services-maps:${versions.gms}"
 }
 group = publishedGroupId                               // Maven Group ID for the artifact
 

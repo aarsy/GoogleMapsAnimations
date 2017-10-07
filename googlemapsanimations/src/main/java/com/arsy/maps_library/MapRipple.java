@@ -13,26 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
-
 package com.arsy.maps_library;
 
 import android.animation.IntEvaluator;
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.view.animation.LinearInterpolator;
 
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.GroundOverlay;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -41,248 +34,257 @@ import com.google.android.gms.maps.model.LatLng;
  * Created by abhay yadav on 09-Aug-16.
  */
 public class MapRipple {
-    private GoogleMap googleMap;
-
-
-    private LatLng latLng, prevlatlng;
-    private Bitmap backgroundImage;                     //ripple image.
-    private float transparency = 0.5f;                    //transparency of image.
-    private volatile double distance = 2000;                       //distance to which ripple should be shown in metres
-    private int numberOfRipples = 1;                      //number of ripples to show, max = 4
-    private int fillColor = Color.TRANSPARENT;           //fillcolor of circle
-    private int strokeColor = Color.BLACK;               //border color of circle
-    private int strokewidth = 10;                          //border width of circle
-    private long durationBetweenTwoRipples = 4000;      //in microseconds.
-    private long rippleDuration = 12000;                //in microseconds
-    private ValueAnimator vAnimators[];
-    private Handler handlers[];
-    private GroundOverlay gOverlays[];
-    private GradientDrawable drawable;
+    private GoogleMap mGoogleMap;
+    private LatLng mLatLng, mPrevLatLng;
+    private BitmapDescriptor mBackgroundImageDescriptor;  //ripple image.
+    private float mTransparency = 0.5f;                   //transparency of image.
+    private volatile double mDistance = 2000;             //distance to which ripple should be shown in metres
+    private int mNumberOfRipples = 1;                     //number of ripples to show, max = 4
+    private int mFillColor = Color.TRANSPARENT;           //fill color of circle
+    private int mStrokeColor = Color.BLACK;               //border color of circle
+    private int mStrokeWidth = 10;                        //border width of circle
+    private long mDurationBetweenTwoRipples = 4000;       //in microseconds.
+    private long mRippleDuration = 12000;                 //in microseconds
+    private ValueAnimator mAnimators[];
+    private Handler mHandlers[];
+    private GroundOverlay mGroundOverlays[];
+    private GradientDrawable mBackground;
     private boolean isAnimationRunning = false;
 
     public MapRipple(GoogleMap googleMap, LatLng latLng, Context context) {
-        this.googleMap = googleMap;
-        this.latLng = latLng;
-        this.prevlatlng = latLng;
-        drawable = (GradientDrawable) context.getResources().getDrawable(R.drawable.background);
-        vAnimators = new ValueAnimator[4];
-        handlers = new Handler[4];
-        gOverlays = new GroundOverlay[4];
+        mGoogleMap = googleMap;
+        mLatLng = latLng;
+        mPrevLatLng = latLng;
+        mBackground = (GradientDrawable) ContextCompat.getDrawable(context, R.drawable.background);
+        mAnimators = new ValueAnimator[4];
+        mHandlers = new Handler[4];
+        mGroundOverlays = new GroundOverlay[4];
     }
 
-    public void withTransparency(float transparency) {
-        this.transparency = transparency;
+    /**
+     * @param transparency sets transparency for background of circle
+     */
+    public MapRipple withTransparency(float transparency) {
+        mTransparency = transparency;
+        return this;
     }
 
-
-    public void withDistance(double distance) {
-        if (distance < 200)
+    /**
+     * @param distance sets radius distance for circle
+     */
+    public MapRipple withDistance(double distance) {
+        if (distance < 200) {
             distance = 200;
-        this.distance = distance;
+        }
+        mDistance = distance;
+        return this;
     }
 
-    public void withLatLng(LatLng latLng) {
-        prevlatlng = this.latLng;
-        this.latLng = latLng;
-
+    /**
+     * @param latLng sets position for center of circle
+     */
+    public MapRipple withLatLng(LatLng latLng) {
+        mPrevLatLng = mLatLng;
+        mLatLng = latLng;
+        return this;
     }
 
-
-    public void withNumberOfRipples(int numberOfRipples) {
-        if (numberOfRipples > 4 || numberOfRipples < 1)
+    /**
+     * @param numberOfRipples sets count of ripples
+     */
+    public MapRipple withNumberOfRipples(int numberOfRipples) {
+        if (numberOfRipples > 4 || numberOfRipples < 1) {
             numberOfRipples = 4;
-        this.numberOfRipples = numberOfRipples;
+        }
+        mNumberOfRipples = numberOfRipples;
+        return this;
     }
 
-
-    public void withFillColor(int fillColor) {
-        this.fillColor = fillColor;
+    /**
+     * @param fillColor sets fill color
+     */
+    public MapRipple withFillColor(int fillColor) {
+        mFillColor = fillColor;
+        return this;
     }
 
-
-    public void withStrokeColor(int strokeColor) {
-        this.strokeColor = strokeColor;
+    /**
+     * @param strokeColor sets stroke color
+     */
+    public MapRipple withStrokeColor(int strokeColor) {
+        mStrokeColor = strokeColor;
+        return this;
     }
 
-
-    public void withStrokewidth(int strokewidth) {
-        this.strokewidth = strokewidth;
+    /**
+     * @deprecated use {@link #withStrokeWidth(int)} instead
+     */
+    @Deprecated
+    public void withStrokewidth(int strokeWidth) {
+        mStrokeWidth = strokeWidth;
     }
 
-
-    public void withDurationBetweenTwoRipples(long durationBetweenTwoRipples) {
-        this.durationBetweenTwoRipples = durationBetweenTwoRipples;
+    /**
+     * @param strokeWidth sets stroke width
+     */
+    public MapRipple withStrokeWidth(int strokeWidth) {
+        mStrokeWidth = strokeWidth;
+        return this;
     }
 
+    /**
+     * @param durationBetweenTwoRipples sets duration before pulse tick animation
+     */
+    public MapRipple withDurationBetweenTwoRipples(long durationBetweenTwoRipples) {
+        mDurationBetweenTwoRipples = durationBetweenTwoRipples;
+        return this;
+    }
+
+    /**
+     * @return current state of animation
+     */
     public boolean isAnimationRunning() {
         return isAnimationRunning;
     }
 
-
-    public void withRippleDuration(long rippleDuration) {
-        this.rippleDuration = rippleDuration;
+    /**
+     * @param rippleDuration sets duration of ripple animation
+     */
+    public MapRipple withRippleDuration(long rippleDuration) {
+        mRippleDuration = rippleDuration;
+        return this;
     }
 
-    final Runnable runnable1 = new Runnable() {
+    private final Runnable mCircleOneRunnable = new Runnable() {
         @Override
         public void run() {
-            gOverlays[0] = googleMap.addGroundOverlay(new
-                    GroundOverlayOptions()
-                    .position(latLng, (int) distance)
-                    .transparency(transparency)
-                    .image(BitmapDescriptorFactory.fromBitmap(backgroundImage)));
-
-            OverLay(0);
-
-        }
-    };
-    final Runnable runnable2 = new Runnable() {
-        @Override
-        public void run() {
-            gOverlays[1] = googleMap.addGroundOverlay(new
-                    GroundOverlayOptions()
-                    .position(latLng, (int) distance)
-                    .transparency(transparency)
-                    .image(BitmapDescriptorFactory.fromBitmap(backgroundImage)));
-
-            OverLay(1);
-
-        }
-    };
-    final Runnable runnable3 = new Runnable() {
-        @Override
-        public void run() {
-            gOverlays[2] = googleMap.addGroundOverlay(new
-                    GroundOverlayOptions()
-                    .position(latLng, (int) distance)
-                    .transparency(transparency)
-                    .image(BitmapDescriptorFactory.fromBitmap(backgroundImage)));
-
-            OverLay(2);
-
-        }
-    };
-    final Runnable runnable4 = new Runnable() {
-        @Override
-        public void run() {
-            gOverlays[3] = googleMap.addGroundOverlay(new
-                    GroundOverlayOptions()
-                    .position(latLng, (int) distance)
-                    .transparency(transparency)
-                    .image(BitmapDescriptorFactory.fromBitmap(backgroundImage)));
-
-            OverLay(3);
-
+            mGroundOverlays[0] = mGoogleMap.addGroundOverlay(new GroundOverlayOptions()
+                    .position(mLatLng, (int) mDistance)
+                    .transparency(mTransparency)
+                    .image(mBackgroundImageDescriptor));
+            startAnimation(0);
         }
     };
 
-    private void OverLay(final int i) {
-        vAnimators[i] = ValueAnimator.ofInt(0, (int) distance);
-        vAnimators[i].setRepeatCount(ValueAnimator.INFINITE);
-        vAnimators[i].setRepeatMode(ValueAnimator.RESTART);
-        vAnimators[i].setDuration(rippleDuration);
-        vAnimators[i].setEvaluator(new IntEvaluator());
-        vAnimators[i].setInterpolator(new LinearInterpolator());
-        vAnimators[i].addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+    private final Runnable mCircleTwoRunnable = new Runnable() {
+        @Override
+        public void run() {
+            mGroundOverlays[1] = mGoogleMap.addGroundOverlay(new GroundOverlayOptions()
+                    .position(mLatLng, (int) mDistance)
+                    .transparency(mTransparency)
+                    .image(mBackgroundImageDescriptor));
+            startAnimation(1);
+        }
+    };
+
+    private final Runnable mCircleThreeRunnable = new Runnable() {
+        @Override
+        public void run() {
+            mGroundOverlays[2] = mGoogleMap.addGroundOverlay(new GroundOverlayOptions()
+                    .position(mLatLng, (int) mDistance)
+                    .transparency(mTransparency)
+                    .image(mBackgroundImageDescriptor));
+            startAnimation(2);
+        }
+    };
+
+    private final Runnable mCircleFourRunnable = new Runnable() {
+        @Override
+        public void run() {
+            mGroundOverlays[3] = mGoogleMap.addGroundOverlay(new GroundOverlayOptions()
+                    .position(mLatLng, (int) mDistance)
+                    .transparency(mTransparency)
+                    .image(mBackgroundImageDescriptor));
+            startAnimation(3);
+        }
+    };
+
+    private void startAnimation(final int numberOfRipple) {
+        ValueAnimator animator = ValueAnimator.ofInt(0, (int) mDistance);
+        animator.setRepeatCount(ValueAnimator.INFINITE);
+        animator.setRepeatMode(ValueAnimator.RESTART);
+        animator.setDuration(mRippleDuration);
+        animator.setEvaluator(new IntEvaluator());
+        animator.setInterpolator(new LinearInterpolator());
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                final Integer val = (Integer) valueAnimator.getAnimatedValue();
-                gOverlays[i].setDimensions(val);
-                if (distance - val <= 10) {
-                    if (latLng != prevlatlng) {
-                        gOverlays[i].setPosition(latLng);
+                int animated = (int) valueAnimator.getAnimatedValue();
+                mGroundOverlays[numberOfRipple].setDimensions(animated);
+                if (mDistance - animated <= 10) {
+                    if (mLatLng != mPrevLatLng) {
+                        mGroundOverlays[numberOfRipple].setPosition(mLatLng);
                     }
                 }
-
             }
         });
-        vAnimators[i].start();
+        animator.start();
+        mAnimators[numberOfRipple] = animator;
     }
 
     private void setDrawableAndBitmap() {
-        drawable.setColor(fillColor);
-        float d = Resources.getSystem().getDisplayMetrics().density;
-        int width = (int) (strokewidth * d); // margin in pixels
-        drawable.setStroke(width, strokeColor);
-        backgroundImage = drawableToBitmap(drawable);
+        mBackground.setColor(mFillColor);
+        mBackground.setStroke(UiUtil.dpToPx(mStrokeWidth), mStrokeColor);
+        mBackgroundImageDescriptor = UiUtil.drawableToBitmapDescriptor(mBackground);
     }
 
-    private Bitmap drawableToBitmap(Drawable drawable) {
-        Bitmap bitmap = null;
-
-        if (drawable instanceof BitmapDrawable) {
-            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-            if (bitmapDrawable.getBitmap() != null) {
-                return bitmapDrawable.getBitmap();
-            }
-        }
-
-        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
-            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
-        } else {
-            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        }
-
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-        return bitmap;
-    }
-
+    /**
+     * Stops current animation if it running
+     */
     public void stopRippleMapAnimation() {
         if (isAnimationRunning) {
             try {
-                for (int i = 0; i < numberOfRipples; i++) {
+                for (int i = 0; i < mNumberOfRipples; i++) {
                     if (i == 0) {
-                        handlers[i].removeCallbacks(runnable1);
-                        vAnimators[i].cancel();
-                        gOverlays[i].remove();
-
+                        mHandlers[i].removeCallbacks(mCircleOneRunnable);
+                        mAnimators[i].cancel();
+                        mGroundOverlays[i].remove();
                     }
                     if (i == 1) {
-                        handlers[i].removeCallbacks(runnable2);
-                        vAnimators[i].cancel();
-                        gOverlays[i].remove();
+                        mHandlers[i].removeCallbacks(mCircleTwoRunnable);
+                        mAnimators[i].cancel();
+                        mGroundOverlays[i].remove();
                     }
                     if (i == 2) {
-                        handlers[i].removeCallbacks(runnable3);
-                        vAnimators[i].cancel();
-                        gOverlays[i].remove();
+                        mHandlers[i].removeCallbacks(mCircleThreeRunnable);
+                        mAnimators[i].cancel();
+                        mGroundOverlays[i].remove();
                     }
                     if (i == 3) {
-                        handlers[i].removeCallbacks(runnable4);
-                        vAnimators[i].cancel();
-                        gOverlays[i].remove();
+                        mHandlers[i].removeCallbacks(mCircleFourRunnable);
+                        mAnimators[i].cancel();
+                        mGroundOverlays[i].remove();
                     }
                 }
-
-
             } catch (Exception e) {
-
+                //no need to handle it
             }
         }
         isAnimationRunning = false;
     }
 
+    /**
+     * Starts animations
+     */
     public void startRippleMapAnimation() {
         if (!isAnimationRunning) {
             setDrawableAndBitmap();
-            for (int i = 0; i < numberOfRipples; i++) {
+            for (int i = 0; i < mNumberOfRipples; i++) {
                 if (i == 0) {
-                    handlers[i] = new Handler();
-                    handlers[i].postDelayed(runnable1, durationBetweenTwoRipples * i);
+                    mHandlers[i] = new Handler();
+                    mHandlers[i].postDelayed(mCircleOneRunnable, mDurationBetweenTwoRipples * i);
                 }
                 if (i == 1) {
-                    handlers[i] = new Handler();
-                    handlers[i].postDelayed(runnable2, durationBetweenTwoRipples * i);
+                    mHandlers[i] = new Handler();
+                    mHandlers[i].postDelayed(mCircleTwoRunnable, mDurationBetweenTwoRipples * i);
                 }
                 if (i == 2) {
-                    handlers[i] = new Handler();
-                    handlers[i].postDelayed(runnable3, durationBetweenTwoRipples * i);
+                    mHandlers[i] = new Handler();
+                    mHandlers[i].postDelayed(mCircleThreeRunnable, mDurationBetweenTwoRipples * i);
                 }
                 if (i == 3) {
-                    handlers[i] = new Handler();
-                    handlers[i].postDelayed(runnable4, durationBetweenTwoRipples * i);
+                    mHandlers[i] = new Handler();
+                    mHandlers[i].postDelayed(mCircleFourRunnable, mDurationBetweenTwoRipples * i);
                 }
             }
         }
