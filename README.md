@@ -1,6 +1,6 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-GoogleMapsAnimations-green.svg?style=true)](https://android-arsenal.com/details/1/5070)
 
-# GoogleMapsAnimations        
+# [Deprecated]GoogleMapsAnimations        
 
 "GoogleMapsAnimations" is an awesome first of its type android library for showing a ripple and radar animations on a google map, e.g show catchment area of an earthquake where ripples have been felt, give prominence to certain markers which need to be highlighted. Also add a ripple when your user is moving on the map and give a #PokemonGo type ripple effect and also add a radar type effect to show users that you are searching in certain area
 
